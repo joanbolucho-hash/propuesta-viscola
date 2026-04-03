@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Propuesta Viscola — Fluxo Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#060a10;--card:#0d1420;--card2:#111a2b;--text:#e4eaf4;--muted:#8fa3c0;
+      --accent:#3ee8c8;--accent2:#2bb8a0;--warn:#f5c542;--line:#1c2a40;
+      --gradient:linear-gradient(135deg,#3ee8c8 0%,#2b90d9 100%);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+    /* HERO */
+    .hero{position:relative;padding:60px 24px 50px;text-align:center;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(62,232,200,.12) 0%,transparent 70%);pointer-events:none}
+    .hero-logo{width:140px;margin-bottom:20px;opacity:.9}
+    .hero h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero .subtitle{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto 24px}
+    .hero .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+    .pill{padding:6px 14px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);backdrop-filter:blur(4px)}
+    .hero .meta{font-size:13px;color:var(--muted);margin-top:20px;opacity:.7}
+
+    /* LAYOUT */
+    .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+    section{margin-bottom:48px}
+
+    /* SECTION HEADERS */
+    .sh{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+    .sh-num{width:32px;height:32px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--bg);flex-shrink:0}
+    .sh h2{font-size:18px;font-weight:700;letter-spacing:-.2px}
+
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px;transition:border-color .2s}
+    .card:hover{border-color:rgba(62,232,200,.25)}
+    .card h3{font-size:14px;font-weight:600;margin-bottom:10px;color:#fff}
+    .card p,.card li{color:var(--muted);font-size:14px;line-height:1.65}
+    .card ul{margin:8px 0 0 18px}
+
+    /* GRID */
+    .g2{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:700px){.g2{grid-template-columns:1fr 1fr}}
+    .g4{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media(min-width:700px){.g4{grid-template-columns:repeat(4,1fr)}}
+
+    /* KPI BOXES */
+    .kpi{background:var(--card2);border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
+    .kpi .icon{font-size:24px;margin-bottom:6px}
+    .kpi .label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+    .kpi .val{font-size:14px;font-weight:600;color:var(--text)}
+
+    /* FLOW DIAGRAM */
+    .flow{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+    .flow-row{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center}
+    .flow-step{padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;white-space:nowrap}
+    .flow-old{background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.25);color:var(--warn)}
+    .flow-new{background:rgba(62,232,200,.08);border:1px solid rgba(62,232,200,.25);color:var(--accent)}
+    .flow-arrow{color:var(--muted);font-size:18px;margin:0 4px;flex-shrink:0}
+    .flow-label{font-size:12px;color:var(--muted);margin-bottom:6px;text-align:center;text-transform:uppercase;letter-spacing:.5px}
+
+    /* CALLOUT */
+    .callout{border-left:3px solid var(--accent);padding:14px 16px;background:rgba(62,232,200,.04);border-radius:0 12px 12px 0;margin-top:14px;font-size:13px;color:var(--muted)}
+    .callout strong{color:var(--accent)}
+    .callout.warn{border-left-color:var(--warn)}
+    .callout.warn strong{color:var(--warn)}
+
+    /* TABLE */
+    .tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+    .tbl th{text-align:left;padding:10px;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line)}
+    .tbl td{padding:10px;border-bottom:1px solid rgba(28,42,64,.5);color:var(--muted);vertical-align:top}
+    .tbl tr:hover td{background:rgba(255,255,255,.02)}
+
+    /* TAGS */
+    .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid var(--line)}
+    .tag.ok{border-color:rgba(62,232,200,.4);color:var(--accent)}
+    .tag.warn{border-color:rgba(245,197,66,.4);color:var(--warn)}
+    .tag.mid{border-color:rgba(139,160,200,.4);color:var(--muted)}
+
+    /* PRICING */
+    .price-box{background:linear-gradient(135deg,rgba(62,232,200,.06) 0%,rgba(43,144,217,.06) 100%);border:1px solid rgba(62,232,200,.2);border-radius:16px;padding:24px;text-align:center;margin-top:16px}
+    .price-box .amount{font-size:32px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .price-box .sub{font-size:14px;color:var(--muted);margin-top:4px}
+    .price-detail{font-size:13px;color:var(--muted);margin-top:8px}
+
+    /* COLLAB CARDS */
+    .collab{display:flex;gap:14px;flex-wrap:wrap}
+    .collab .role{flex:1 1 280px;border-radius:14px;padding:18px;text-align:center}
+    .collab .role.fluxo{background:rgba(62,232,200,.05);border:1px solid rgba(62,232,200,.2)}
+    .collab .role.viscola{background:rgba(43,144,217,.05);border:1px solid rgba(43,144,217,.2)}
+    .collab .role h4{font-size:14px;font-weight:700;margin-bottom:6px}
+    .collab .role p{font-size:13px;color:var(--muted)}
+    .collab .role .emoji{font-size:28px;margin-bottom:8px}
+
+    /* CASO REAL */
+    .caso{position:relative;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:16px;padding:20px;overflow:hidden}
+    .caso::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(62,232,200,.08) 0%,transparent 70%);pointer-events:none}
+
+    /* FOOTER */
+    footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--muted);opacity:.6}
+    footer a{color:var(--accent);text-decoration:none}
+
+    /* STEP CARDS */
+    .step{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;margin-bottom:10px}
+    .step-num{width:28px;height:28px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--bg);flex-shrink:0;margin-top:2px}
+    .step-body h4{font-size:13px;font-weight:600;margin-bottom:4px;color:#fff}
+    .step-body p{font-size:13px;color:var(--muted)}
+
+    /* DIVIDER */
+    .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--line) 50%,transparent 100%);margin:48px 0}
+
+    /* SKILLS GRID */
+    .skill{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;transition:transform .2s,border-color .2s}
+    .skill:hover{transform:translateY(-2px);border-color:rgba(62,232,200,.3)}
+    .skill .icon{font-size:28px;margin-bottom:8px}
+    .skill .name{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px}
+    .skill .desc{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+
+<!-- ======================== HERO ======================== -->
+<div class="hero">
+  <img src="https://raw.githubusercontent.com/joanbolucho-hash/pipeline-ventas/main/fluxo-logo.png"
+       alt="Fluxo" class="hero-logo"
+       onerror="this.style.display='none'">
+  <h1>Optimizacion del proceso de compras</h1>
+  <p class="subtitle">Propuesta para Viscola Grup Constructor &mdash; de notas en papel a pedidos directos en Business Central</p>
+  <div class="pills">
+    <span class="pill">Compras</span>
+    <span class="pill">Business Central</span>
+    <span class="pill">Construccion</span>
+    <span class="pill">Cero Excels</span>
+  </div>
+  <p class="meta">Reunion 3 Mar 2026 &middot; Preparado para Josep Castanyer (IT) &middot; Ref: Imma Trave</p>
+</div>
+
+<div class="wrap">
+
+<!-- ======================== 1. PROBLEMA ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">1</div><h2>El problema: demasiadas manos en cada pedido</h2></div>
+
+  <div class="card">
+    <p>Cada vez que un jefe de obra necesita material, el proceso pasa por varias personas, varios documentos, y varios dias.</p>
+
+    <div class="g4" style="margin-top:16px">
+      <div class="kpi">
+        <div class="icon">&#128221;</div>
+        <div class="label">Paso 1</div>
+        <div class="val">Jefe de obra escribe nota</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128105;&#8205;&#128187;</div>
+        <div class="label">Paso 2</div>
+        <div class="val">Pasa la nota a secretaria</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128202;</div>
+        <div class="label">Paso 3</div>
+        <div class="val">Secretaria crea Excel</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128230;</div>
+        <div class="label">Paso 4</div>
+        <div class="val">Pedido se tramita a mano</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <h3>&#9888;&#65039; Lo que duele</h3>
+      <ul>
+        <li><strong>Tiempo</strong> &mdash; Cada pedido pasa por 3+ personas antes de ejecutarse</li>
+        <li><strong>Errores</strong> &mdash; Copiar datos a mano entre nota, Excel y Business Central</li>
+        <li><strong>Visibilidad</strong> &mdash; Nadie sabe el estado real de un pedido sin preguntar</li>
+        <li><strong>Cuello de botella</strong> &mdash; La secretaria gestiona TODOS los pedidos</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>&#127919; Lo que queremos</h3>
+      <ul>
+        <li>Pedido directo desde obra, sin intermediarios</li>
+        <li>Datos van a Business Central automaticamente</li>
+        <li>Panel donde ver el estado de todos los pedidos</li>
+        <li>La secretaria aprueba/supervisa en vez de picar datos</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 2. SOLUCION ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">2</div><h2>La solucion: pedido directo desde obra</h2></div>
+
+  <div class="card">
+    <div class="flow">
+      <div class="flow-label">&#128308; Hoy &mdash; 4+ pasos, 3+ personas</div>
+      <div class="flow-row">
+        <span class="flow-step flow-old">&#128221; Nota papel</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-old">&#128105;&#8205;&#128187; Secretaria</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-old">&#128202; Excel</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-old">&#128230; Pedido manual</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-old">&#128187; Business Central</span>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="flow-label">&#128994; Despues &mdash; 1 paso, directo</div>
+      <div class="flow-row">
+        <span class="flow-step flow-new">&#128241; Jefe de obra (movil)</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-new">&#128196; Formulario</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step flow-new">&#128187; Business Central</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Que incluye</h3>
+    <div class="g2" style="margin-top:12px">
+      <div class="kpi">
+        <div class="icon">&#128241;</div>
+        <div class="label">Formulario movil</div>
+        <div class="val">Link desde el movil. Material, cantidad, obra. Sin apps, sin instalar nada.</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128268;</div>
+        <div class="label">Conexion Business Central</div>
+        <div class="val">Pedido se crea automaticamente via API. Sin Excels.</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#9989;</div>
+        <div class="label">Validaciones</div>
+        <div class="val">Campos obligatorios, catalogo predefinido, asignacion a obra.</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128276;</div>
+        <div class="label">Notificaciones</div>
+        <div class="val">Aviso por email/WhatsApp. Aprueba o rechaza con un click.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>La secretaria no desaparece</strong> &mdash; deja de picar datos y pasa a aprobar/supervisar. Mas control, menos trabajo mecanico.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 3. COLABORACION ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">3</div><h2>Como funciona la colaboracion</h2></div>
+
+  <div class="collab">
+    <div class="role fluxo">
+      <div class="emoji">&#128736;&#65039;</div>
+      <h4>Fluxo (Joan)</h4>
+      <p>Construye la conexion API, el formulario, las automatizaciones y los tests. Entrega el sistema funcionando + documentacion.</p>
+    </div>
+    <div class="role viscola">
+      <div class="emoji">&#128187;</div>
+      <h4>Josep (Viscola IT)</h4>
+      <p>Define los campos, valida con el equipo, y gestiona el sistema una vez entregado. El sistema es tuyo.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h3>Que se entrega a Josep</h3>
+    <ul>
+      <li><strong>Sistema funcionando</strong> &mdash; Formulario + integracion + notificaciones, testeado</li>
+      <li><strong>Documentacion tecnica</strong> &mdash; Que hace cada pieza, como modificar campos, como anadir materiales</li>
+      <li><strong>Sesion de transferencia</strong> &mdash; 1h de formacion para ajustar y mantener el sistema de forma autonoma</li>
+      <li><strong>Soporte post-entrega</strong> &mdash; 2 meses de soporte asincrono (48h respuesta)</li>
+    </ul>
+    <div class="callout">
+      <strong>El objetivo es que Viscola no dependa de Fluxo.</strong> Yo monto el sistema, te lo entrego, y tu lo gestionas. Si despues necesitais ampliaciones, estoy disponible &mdash; pero el sistema es vuestro.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 4. SKILLS ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">4</div><h2>Skills tecnicas</h2></div>
+
+  <div class="g4">
+    <div class="skill">
+      <div class="icon">&#128268;</div>
+      <div class="name">APIs &amp; ERP</div>
+      <div class="desc">Business Central, Holded, Stripe, webhooks</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#9881;&#65039;</div>
+      <div class="name">Automatizacion</div>
+      <div class="desc">n8n (self-hosted), workflows, triggers, alertas</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128172;</div>
+      <div class="name">Omnicanal</div>
+      <div class="desc">WhatsApp, email, SMS, llamadas, secuencias</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128200;</div>
+      <div class="name">CRM &amp; Pipeline</div>
+      <div class="desc">GoHighLevel, Zoho, pipelines automaticos</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128247;</div>
+      <div class="name">OCR &amp; IA</div>
+      <div class="desc">Fotos a datos, procesamiento de documentos</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128202;</div>
+      <div class="name">Reporting</div>
+      <div class="desc">Dashboards en tiempo real, sin Excels</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128274;</div>
+      <div class="name">Integraciones</div>
+      <div class="desc">Instagram, Facebook, calendarios, formularios</div>
+    </div>
+    <div class="skill">
+      <div class="icon">&#128218;</div>
+      <div class="name">Transferencia</div>
+      <div class="desc">Documentacion + formacion para autonomia total</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 5. CASO REAL ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">5</div><h2>Caso real: Efecto Solar</h2></div>
+
+  <div class="caso">
+    <p style="margin-bottom:14px">Empresa de instalaciones solares con un problema parecido: presupuestos en su ERP, seguimiento manual, y oportunidades que se perdian.</p>
+
+    <div class="g4">
+      <div class="kpi">
+        <div class="icon">&#128196;</div>
+        <div class="label">Problema</div>
+        <div class="val">+378 presupuestos/anyo sin seguimiento</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#9881;&#65039;</div>
+        <div class="label">Solucion</div>
+        <div class="val">ERP &rarr; n8n &rarr; CRM automatico</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#9989;</div>
+        <div class="label">Resultado</div>
+        <div class="val">Deteccion y seguimiento 100% automatico</div>
+      </div>
+      <div class="kpi">
+        <div class="icon">&#128994;</div>
+        <div class="label">Estado</div>
+        <div class="val">Funcionando desde marzo 2026</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px">
+      <strong>Mismo concepto:</strong> ERP conectado directamente con la operativa. Sin copiar datos, sin Excels. Cada proyecto se adapta &mdash; no copiamos plantillas.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 6. FASES FUTURAS ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">6</div><h2>Despues de compras: que mas se puede hacer</h2></div>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:14px">Sin compromiso, solo para tener el mapa. Primero lo primero: compras.</p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>Modulo</th><th>Que resuelve</th><th>Prioridad</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Seguimiento de presupuestos</strong></td>
+        <td>Secuencias automaticas omnicanal cuando un presupuesto lleva X dias sin respuesta</td>
+        <td><span class="tag ok">Alta</span></td>
+      </tr>
+      <tr>
+        <td><strong>Digitalizacion de inspecciones</strong></td>
+        <td>Foto de libreta &rarr; OCR extrae datos &rarr; registro automatico en Business Central</td>
+        <td><span class="tag warn">Media</span></td>
+      </tr>
+      <tr>
+        <td><strong>Automatizacion financiera</strong></td>
+        <td>Reportes, alertas de vencimiento, conciliaciones para la directora financiera</td>
+        <td><span class="tag warn">Media</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 7. INVERSION ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">7</div><h2>Inversion &mdash; Fase 1: Automatizacion de compras</h2></div>
+
+  <div class="g2">
+    <div class="price-box">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px">Setup (unico)</div>
+      <div class="amount">450&euro;</div>
+      <div class="price-detail">50% al inicio + 50% a la entrega</div>
+    </div>
+    <div class="price-box">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px">Gestion mensual</div>
+      <div class="amount">95&euro;/mes</div>
+      <div class="price-detail">Permanencia minima: 2 meses</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="g2">
+      <div>
+        <h3>Setup incluye</h3>
+        <ul>
+          <li>Formulario de pedido movil personalizado</li>
+          <li>Integracion API con Business Central</li>
+          <li>Sistema de notificaciones (email/WhatsApp)</li>
+          <li>Panel de estado de pedidos</li>
+          <li>Tests completos + documentacion tecnica</li>
+          <li>Sesion de transferencia con Josep (1h)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Gestion mensual incluye</h3>
+        <ul>
+          <li>Monitorizacion del sistema</li>
+          <li>Hasta 3 ajustes/mes</li>
+          <li>Soporte asincrono (48h respuesta)</li>
+          <li>1 revision mensual de rendimiento</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:14px;opacity:.7">Plazo de entrega estimado: 2-3 semanas. IVA no incluido.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ======================== 8. PROXIMOS PASOS ======================== -->
+<section>
+  <div class="sh"><div class="sh-num">8</div><h2>Proximos pasos</h2></div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h4>Reunion tecnica con Josep (30 min)</h4>
+      <p>Repasar el flujo de compras actual, ver los campos de Business Central, cerrar diseno final.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h4>Acceso de prueba a Business Central</h4>
+      <p>Solo lectura para validar que la API permite lo que necesitamos.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h4>Implementacion (2-3 semanas)</h4>
+      <p>Sistema funcionando, testeado, documentado y entregado.</p>
+    </div>
+  </div>
+
+  <div class="callout warn" style="margin-top:16px">
+    <strong>Sin compromiso:</strong> El paso 1 es una reunion de 30 minutos para validar que tiene sentido. Si despues de verlo no encaja, no pasa nada. Cero riesgo.
+  </div>
+</section>
+
+</div>
+
+<footer>
+  Preparado por <strong>Joan &mdash; Fluxo Consulting</strong> &middot; <a href="https://fluxo.consulting">fluxo.consulting</a> &middot; Abril 2026
+</footer>
+
+</body>
+</html>
